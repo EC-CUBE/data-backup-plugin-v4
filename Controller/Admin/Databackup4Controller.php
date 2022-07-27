@@ -38,8 +38,7 @@ class Databackup4Controller extends AbstractController
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST') {
-            // %kernel.project_dir%/var/backup
-            $backupDir = $this->container->getParameter('kernel.project_dir').'/var/backup/'.date('YmdHis');
+            $backupDir = $this->container->getParameter('plugin_data_realdir').'/Databackup4/'.date('YmdHis');
             if (!is_dir($backupDir)) {
                 mkdir($backupDir, 0777, true);
             }
