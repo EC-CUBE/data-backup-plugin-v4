@@ -45,7 +45,7 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
      */
     public function testExecute()
     {
-        $backupDir = self::$container->getParameter('kernel.project_dir').'/var/backup/';
+        $backupDir = self::$container->getParameter('plugin_data_realdir').'/Databackup4/';
         if (!is_dir($backupDir)) {
             // create backup dir
             mkdir($backupDir, 0777, true);
