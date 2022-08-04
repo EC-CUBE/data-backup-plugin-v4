@@ -58,7 +58,7 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
         $tarGz = new \PharData($response->getFile());
         foreach ($tarGz as $f) {
             // csvファイルが格納されている
-            self::assertStringContainsString('.csv', $f->getFileName());
+            self::assertContains('.csv', $f->getFileName());
         }
     }
 }
