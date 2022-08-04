@@ -41,7 +41,7 @@ class Databackup4Controller extends AbstractController
         $form = $this->createFormBuilder([])->getForm();
         $form->handleRequest($request);
 
-        if ($request->getMethod() === 'POST') {
+        if ($form->isSubmitted() && $form->isValid()) {
             $backupBaseDir = $this->getParameter('plugin_data_realdir').'/Databackup4';
             $backupDir = $backupBaseDir.'/'.date('YmdHis');
 
