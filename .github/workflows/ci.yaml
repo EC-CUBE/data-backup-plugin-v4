@@ -24,7 +24,7 @@ jobs:
         operating-system: [ ubuntu-18.04 ]
         php: [ '7.3', '7.4' ]
         db: [ 'mysql', 'pgsql' ]
-        eccube_version: [ '4.1' ]
+        eccube_version: [ '4.0', '4.1' ]
         plugin_code: [ 'Databackup4' ]
         include:
           - db: mysql
@@ -87,6 +87,11 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
+
+      - if: ${{ startsWith(matrix.eccube_version, '4.0') }}
+        working-directory: 'ec-cube'
+        run: sudo composer selfupdate --1
+
       - name: Install to composer
         working-directory: 'ec-cube'
         run: composer install --no-interaction -o --apcu-autoloader
