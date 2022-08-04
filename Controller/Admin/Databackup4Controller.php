@@ -33,7 +33,7 @@ class Databackup4Controller extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/databackup4/index", name="databackup4_admin_index")
+     * @Route("/%eccube_admin_route%/databackup4/config", name="databackup4_admin_config")
      * @Template("@Databackup4/admin/index.twig")
      */
     public function index(Request $request, EventDispatcherInterface $eventDispatcher)
