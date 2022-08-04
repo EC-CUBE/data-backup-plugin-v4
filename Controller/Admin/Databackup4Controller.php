@@ -62,6 +62,10 @@ class Databackup4Controller extends AbstractController
 
             // 終了時に一時ディレクトリを削除.
             $eventDispatcher->addListener(KernelEvents::TERMINATE, function (TerminateEvent $event) use ($backupBaseDir, $fs) {
+                // UnitTest実行時はterminateイベント実行後にファイル出力が行われるため、ここでは削除しない
+                if (env('APP_ENV') === 'test') {
+                    return;
+                }
                 $fs->remove($backupBaseDir);
             });
 

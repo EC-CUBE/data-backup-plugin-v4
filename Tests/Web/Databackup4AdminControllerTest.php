@@ -14,6 +14,7 @@
 namespace Plugin\Databackup4\Tests\Web;
 
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use \RecursiveIteratorIterator;
@@ -36,7 +37,8 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndex()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('databackup4_admin_index'));
+        $crawler = $this->client->request('GET', $this->generateUrl('databackup4_admin_config'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertContains('データ移行のためのバックアップ', $crawler->html());
     }
 
@@ -45,43 +47,21 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
      */
     public function testExecute()
     {
-        $backupDir = self::$container->getParameter('kernel.project_dir').'/var/backup/';
-        if (!is_dir($backupDir)) {
-            // create backup dir
-            mkdir($backupDir, 0777, true);
-        } else {
-            // remove backup dir(recurcive)
-            $this->rm($backupDir);
-        }
-
-        // execute data backup
-        $crawler = $this->client->request('POST', $this->generateUrl('databackup4_admin_index'));
-
-        $this->assertTrue(is_dir($backupDir));
-
-        // get dir list from backup dir
-        $targets = glob($backupDir.'/*', GLOB_ONLYDIR);
-        $this->assertEquals(1, count($targets));
-
-        $targetDir = $targets[0];
-
-        $this->assertFileExists($targetDir.'/dtb_authority_role.csv');
-        $this->assertFileExists($targetDir.'/mtb_work.csv');
-        $this->assertFileExists($targetDir.'.tar');
-        $this->assertFileExists($targetDir.'.tar.gz');
-
-    }
-
-    private function rm($dir){
-        $entries = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
+        $this->client->request('POST',
+            $this->generateUrl('databackup4_admin_config'),
+            [
+                'form' => ['_token' => 'dummy',],
+            ],
         );
-        
-        foreach ($entries as $entry) {
-            $func = ($entry->isDir() ? 'rmdir' : 'unlink');
-            $func($entry->getRealPath());
+
+        $response = $this->client->getResponse();
+        self::assertTrue($response->isSuccessful());
+        self::assertInstanceOf(BinaryFileResponse::class, $response);
+
+        $tarGz = new \PharData($response->getFile());
+        foreach ($tarGz as $f) {
+            // csvファイルが格納されている
+            self::assertStringContainsString('.csv', $f->getFileName());
         }
-        rmdir($dir);
     }
 }
