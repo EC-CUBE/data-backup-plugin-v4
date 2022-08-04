@@ -13,11 +13,8 @@
 
 namespace Plugin\Databackup4\Tests\Web;
 
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use \RecursiveIteratorIterator;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Class Databackup4AdminControllerTest.
@@ -50,7 +47,7 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
         $this->client->request('POST',
             $this->generateUrl('databackup4_admin_config'),
             [
-                'form' => ['_token' => 'dummy',],
+                'form' => ['_token' => 'dummy'],
             ],
         );
 

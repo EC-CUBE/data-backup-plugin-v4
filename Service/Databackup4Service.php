@@ -13,10 +13,10 @@
 
 namespace Plugin\Databackup4\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Databackup4Service
 {
@@ -27,7 +27,7 @@ class Databackup4Service
 
     /**
      * Databackup4Service constructor.
-     * 
+     *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
@@ -103,8 +103,5 @@ class Databackup4Service
         }
 
         throw new \LogicException();
-    }  
+    }
 }
-
-
-
