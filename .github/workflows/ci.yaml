@@ -17,14 +17,13 @@ on:
 jobs:
   run-on-linux:
     name: Run on Linux
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
+        eccube_version: [ '4.2' ]
         php: [ '7.4', '8.0', '8.1' ]
         db: [ 'mysql', 'mysql8', 'pgsql' ]
-        eccube_version: [ '4.2' ]
         plugin_code: [ 'Databackup42' ]
         include:
           - db: mysql
@@ -72,7 +71,6 @@ jobs:
           - 1080:1080
           - 1025:1025
     steps:
-      - run: sudo apt-get purge -y hhvm
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -143,7 +141,7 @@ jobs:
         working-directory: 'ec-cube'
         run: |
           bin/console cache:clear --no-warmup
-          bin/phpunit -c app/Plugin/${PLUGIN_CODE}/phpunit.xml.dist app/Plugin/${PLUGIN_CODE}/Tests
+          ./vendor/bin/phpunit -c app/Plugin/${PLUGIN_CODE}/phpunit.xml.dist app/Plugin/${PLUGIN_CODE}/Tests
       - name: Disable Plugin
         working-directory: 'ec-cube'
         env:
