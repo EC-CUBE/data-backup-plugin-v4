@@ -11,10 +11,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\Databackup4\Controller\Admin;
+namespace Plugin\Databackup42\Controller\Admin;
 
 use Eccube\Controller\AbstractController;
-use Plugin\Databackup4\Service\Databackup4Service;
+use Plugin\Databackup42\Service\Databackup4Service;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -44,8 +44,8 @@ class Databackup4Controller extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/databackup4/config", name="databackup4_admin_config")
-     * @Template("@Databackup4/admin/index.twig")
+     * @Route("/%eccube_admin_route%/databackup42/config", name="databackup42_admin_config")
+     * @Template("@Databackup42/admin/index.twig")
      */
     public function index(Request $request, EventDispatcherInterface $eventDispatcher)
     {
@@ -53,7 +53,7 @@ class Databackup4Controller extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $backupBaseDir = $this->getParameter('plugin_data_realdir').'/Databackup4';
+            $backupBaseDir = $this->getParameter('plugin_data_realdir').'/Databackup42';
             $backupDir = $backupBaseDir.'/'.date('YmdHis');
 
             $fs = new Filesystem();
