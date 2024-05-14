@@ -24,7 +24,7 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
     /**
      * Setup method.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
