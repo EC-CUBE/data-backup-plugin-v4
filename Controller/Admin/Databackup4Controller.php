@@ -21,7 +21,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -72,7 +72,7 @@ class Databackup4Controller extends AbstractController
             $phar->compress(\Phar::GZ);
 
             // 終了時に一時ディレクトリを削除.
-            $eventDispatcher->addListener(KernelEvents::TERMINATE, function (PostResponseEvent $event) use ($backupBaseDir, $fs) {
+            $eventDispatcher->addListener(KernelEvents::TERMINATE, function (TerminateEvent $event) use ($backupBaseDir, $fs) {
                 // UnitTest実行時はterminateイベント実行後にファイル出力が行われるため、ここでは削除しない
                 if (env('APP_ENV') === 'test') {
                     return;
