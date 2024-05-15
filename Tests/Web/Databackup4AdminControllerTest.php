@@ -36,7 +36,7 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
     {
         $crawler = $this->client->request('GET', $this->generateUrl('databackup42_admin_config'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertContains('データ移行のためのバックアップ', $crawler->html());
+        $this->assertStringContainsString('データ移行のためのバックアップ', $crawler->html());
     }
 
     /**
@@ -58,7 +58,7 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
         $tarGz = new \PharData($response->getFile());
         foreach ($tarGz as $f) {
             // csvファイルが格納されている
-            self::assertContains('.csv', $f->getFileName());
+            self::assertStringContainsString('.csv', $f->getFileName());
         }
     }
 }
