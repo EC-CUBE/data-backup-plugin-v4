@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\Databackup4\Tests\Web;
+namespace Plugin\Databackup42\Tests\Web;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -24,7 +24,7 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
     /**
      * Setup method.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -34,9 +34,9 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndex()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('databackup4_admin_config'));
+        $crawler = $this->client->request('GET', $this->generateUrl('databackup42_admin_config'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertContains('データ移行のためのバックアップ', $crawler->html());
+        $this->assertStringContainsString('データ移行のためのバックアップ', $crawler->html());
     }
 
     /**
@@ -45,7 +45,7 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
     public function testExecute()
     {
         $this->client->request('POST',
-            $this->generateUrl('databackup4_admin_config'),
+            $this->generateUrl('databackup42_admin_config'),
             [
                 'form' => ['_token' => 'dummy'],
             ],
@@ -58,7 +58,7 @@ class Databackup4AdminControllerTest extends AbstractAdminWebTestCase
         $tarGz = new \PharData($response->getFile());
         foreach ($tarGz as $f) {
             // csvファイルが格納されている
-            self::assertContains('.csv', $f->getFileName());
+            self::assertStringContainsString('.csv', $f->getFileName());
         }
     }
 }
